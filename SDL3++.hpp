@@ -37,7 +37,7 @@
     #include "SDL3++TextRenderer/TextRenderer.hpp"
 #endif
 
-#if defined(SDL3PP_ALL) || defined(SDL3PP_TextureHandler)
+#if defined(SDL3PP_ALL) || defined(SDL3PP_TextureHandler) //? Finished Implementation
     #include "SDL3++TextureHandler/TextureHandler.hpp"
 #endif
 

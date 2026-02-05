@@ -23,9 +23,9 @@ TTF_Font* JFLX::sdl3PP::TextRenderer::getFont(int index) const {
 }
 
 TTF_Font* JFLX::sdl3PP::TextRenderer::getFont(const std::string& fontName) const {
-    if (!fontIndex.contains(fontName)) {
+    if (!fontLayer.contains(fontName)) {
         return nullptr;
-    } return fonts[fontIndex.at(fontName)];
+    } return fonts[fontLayer.at(fontName)];
 }
 
 void JFLX::sdl3PP::TextRenderer::loadFont(const std::string &pathToFont) {
@@ -110,8 +110,8 @@ void JFLX::sdl3PP::TextRenderer::drawText(const std::string& text, float fontSiz
     }
 }
 
-void JFLX::sdl3PP::TextRenderer::drawText(const std::string& text, float fontSize, float x, float y, int fontIndex_, const SDL_Color color, int orientation, bool outline, SDL_Renderer* rRenderer) const {
-    TTF_Font* font = getFont(fontIndex_);
+void JFLX::sdl3PP::TextRenderer::drawText(const std::string& text, float fontSize, float x, float y, int fontIndex, const SDL_Color color, int orientation, bool outline, SDL_Renderer* rRenderer) const {
+    TTF_Font* font = getFont(fontIndex);
     JFLX::sdl3PP::TextRenderer::drawText(text, fontSize, x, y, font, color, orientation, outline, rRenderer);
 }
 
@@ -127,5 +127,5 @@ void JFLX::sdl3PP::TextRenderer::cleanUp() {
         TTF_CloseFont(font);
     }
     fonts.clear();
-    fontIndex.clear();
+    fontLayer.clear();
 }

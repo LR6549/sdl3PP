@@ -23,7 +23,7 @@ namespace JFLX::sdl3PP {
         private:
             SDL_Renderer* defaultRenderer = nullptr;
             std::vector<TTF_Font*> fonts = {};
-            std::unordered_map<std::string, int> fontIndex = {};
+            std::unordered_map<std::string, int> fontLayer = {};
 
         public:
         TextRenderer();
@@ -50,7 +50,7 @@ namespace JFLX::sdl3PP {
         /*
          * A wrapper for drawText using a index for the font
         */
-        void drawText(const std::string &text, float fontSize, float x, float y, int fontIndex_, SDL_Color color = {0, 0, 0, 255}, int orientation = 1, bool outline = false, SDL_Renderer *rRenderer = nullptr) const;
+        void drawText(const std::string &text, float fontSize, float x, float y, int fontIndex, SDL_Color color = {0, 0, 0, 255}, int orientation = 1, bool outline = false, SDL_Renderer *rRenderer = nullptr) const;
 
         /*
          * A wrapper for drawText using a name index for the font
