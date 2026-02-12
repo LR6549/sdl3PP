@@ -2,5 +2,7 @@
 <project version="4">
   <component name="VcsDirectoryMappings">
     <mapping directory="" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/../JFLX_Header" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/../sdl3++ x" vcs="Git" />
   </component>
 </project>
