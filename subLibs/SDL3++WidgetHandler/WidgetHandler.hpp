@@ -11,12 +11,32 @@
 #include "widget/Widget.hpp"
 
 
+#include <string>
+#include <vector>
+#include <unordered_map>
+
 namespace JFLX::sdl3PP {
     class WidgetHandler {
         private:
+            std::vector<Widget*> widgets;
+            std::unordered_map<std::string, int> identifiers;
 
         public:
 
+        WidgetHandler();
+        ~WidgetHandler();
+
+        void addWidget(Widget* widget);
+
+        void removeWidget(int index);
+        void removeWidget(Widget* widget);
+        void removeWidget(std::string identifier);
+
+        void renderWidgets();
+        void updateWidgets();
+
+        void renderWidget(int index);
+        void renderWidget(std::string identifier);
     };
 } // JFLX
 
