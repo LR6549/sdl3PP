@@ -64,7 +64,7 @@ namespace JFLX::sdl3PP {
         void setVisibility(bool shown);
         void setActiveDuration(float duration);
         void setWidgetCommand(std::unique_ptr<WidgetCommand> widgetCommand);
-        void setActivation(bool useButton = false, bool forceHoverActivationMouse = true, SDL_MouseButtonFlags button = SDL_BUTTON_LEFT, bool useKey = false, bool forceHoverActivationKeyboard = false, SDL_Scancode key = SDLK_UNKNOWN);
+        void setActivation(bool useButton = false, bool forceHoverActivationMouse = true, SDL_MouseButtonFlags button = SDL_BUTTON_LEFT, bool useKey = false, bool forceHoverActivationKeyboard = false, SDL_Scancode key = SDL_SCANCODE_UNKNOWN);
 
 
         void draw();
