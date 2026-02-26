@@ -24,6 +24,8 @@
 #ifndef SDL3PP_LIBRARY_H
 #define SDL3PP_LIBRARY_H
 
+#include <thread>
+
 //* Defines And Error Check
 #if !defined(SDL3PP_ALL) && !defined(SDL3PP_AudioHandler) && !defined(SDL3PP_TextRenderer) && !defined(SDL3PP_TextureHandler) && !defined(SDL3PP_WidgetHandler)
     #error "No SDL3PP modules selected"
@@ -45,7 +47,9 @@
     #include "SDL3++WidgetHandler/WidgetHandler.hpp"
 #endif
 
+bool initSDL3PP();      //! call all init functions! like in update
 
+void updateSDL3PP();    //! call all update functions of widgets etc!
 
 namespace JFLX::sdl3PP {
     inline void voidNullptr() {}
