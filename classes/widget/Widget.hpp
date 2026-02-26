@@ -34,16 +34,20 @@ namespace JFLX::sdl3PP {
 
         bool wIsShown = false;
         bool wIsHovered = false;
+        bool wIsPressed = false;
+
         float wActive = 0.0f;
         float wActiveDuration = 0.0f;
 
-        bool wForceHoverActivationMouse = true;
-        bool wForceHoverActivationKeyboard = false;
-
         bool wMouseActivated = false;
+        bool wForceHoverActivationMouse = true;
+        bool wForceClickPressMouse = true;
         bool wWasPressedMouse = false;
         SDL_MouseButtonFlags wButton = SDL_BUTTON_LEFT;
+
         bool wKeyboardActivated = false;
+        bool wForceHoverActivationKeyboard = false;
+        bool wForceClickPressKeyboard = false;
         bool wWasPressedKey   = false;
         SDL_Scancode wKey = SDL_SCANCODE_UNKNOWN;
 
@@ -55,6 +59,17 @@ namespace JFLX::sdl3PP {
 
         void updateRect();
 
+        int getWidgetID() const;
+        float getX() const;
+        float getY() const;
+        float getWidth() const;
+        float getHeight() const;
+        SDL_Color getColor() const;
+        SDL_Color getColorH() const;
+        SDL_Color getColorA() const;
+        float getActiveDuration() const;
+        WidgetCommand* getWidgetCommand() const;
+
         void setX(float x);
         void setY(float y);
         void setWidth(float width);
@@ -64,8 +79,11 @@ namespace JFLX::sdl3PP {
         void setVisibility(bool shown);
         void setActiveDuration(float duration);
         void setWidgetCommand(std::unique_ptr<WidgetCommand> widgetCommand);
-        void setActivation(bool useButton = false, bool forceHoverActivationMouse = true, SDL_MouseButtonFlags button = SDL_BUTTON_LEFT, bool useKey = false, bool forceHoverActivationKeyboard = false, SDL_Scancode key = SDL_SCANCODE_UNKNOWN);
+        void setActivation(bool useButton = false, bool forceHoverActivationMouse = true, bool forceClickPressMouse = true, SDL_MouseButtonFlags button = SDL_BUTTON_LEFT, bool useKey = false, bool forceHoverActivationKeyboard = false, bool forceClickPressKeyboard = false, SDL_Scancode key = SDL_SCANCODE_UNKNOWN);
 
+        bool isVisible() const;
+        bool isHovered() const;
+        bool isPressed() const;
 
         void draw();
         void draw(SDL_Renderer* r);
@@ -73,7 +91,7 @@ namespace JFLX::sdl3PP {
         void update();
     };
 
-    std::vector<std::unique_ptr<Widget>> widgets;
+    inline std::vector<std::unique_ptr<Widget>> widgetVect;
 
     bool initWidgets();
 

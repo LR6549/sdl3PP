@@ -42,6 +42,7 @@ add_library(${PROJECT_NAME} STATIC
         subLibs/SDL3++AudioHandler/AudioHandler.cpp
         subLibs/SDL3++WidgetHandler/WidgetHandler.hpp
         subLibs/SDL3++WidgetHandler/WidgetHandler.cpp
+        "../sdl3++ x/SDL3++.cpp"
 )
 
 target_compile_definitions(${PROJECT_NAME} PRIVATE SDL_STATIC)

@@ -5,13 +5,70 @@
 #include "Widget.hpp"
 #include "widgetCommand/WidgetCommand.hpp"
 
+/*
+ * Constructor Functions
+*/
+
 // Constructor: initializes position, size, and assigns the widget's command
 JFLX::sdl3PP::Widget::Widget(const int widgetID, const float x, const float y, const float width, const float height, std::unique_ptr<WidgetCommand> widgetCommand) : wWidgetID(widgetID), wX(x), wY(y), wWidth(width), wHeight(height), wWidgetCommand(std::move(widgetCommand)) {}
+
+/*
+ * Void Functions
+*/
+
 
 // Rebuilds the SDL_FRect from the current position and size members
 void JFLX::sdl3PP::Widget::updateRect() {
     wRect = { wX, wY, wWidth, wHeight };
 }
+
+
+/*
+ * Get Functions
+*/
+
+int JFLX::sdl3PP::Widget::getWidgetID() const {
+    return wWidgetID;
+}
+
+float JFLX::sdl3PP::Widget::getX() const {
+    return wX;
+}
+float JFLX::sdl3PP::Widget::getY() const {
+    return wX;
+}
+
+float JFLX::sdl3PP::Widget::getWidth() const {
+    return wWidth;
+}
+
+float JFLX::sdl3PP::Widget::getHeight() const {
+    return wHeight;
+}
+
+SDL_Color JFLX::sdl3PP::Widget::getColor() const {
+    return wColor;
+}
+
+SDL_Color JFLX::sdl3PP::Widget::getColorH() const {
+    return wColorH;
+}
+
+SDL_Color JFLX::sdl3PP::Widget::getColorA() const {
+    return wColorA;
+}
+
+float JFLX::sdl3PP::Widget::getActiveDuration() const {
+    return wActiveDuration;
+}
+
+JFLX::sdl3PP::WidgetCommand* JFLX::sdl3PP::Widget::getWidgetCommand() const {
+    return wWidgetCommand.get();
+}
+
+/*
+ * Set Functions
+*/
 
 // Sets the X position and refreshes the rect
 void JFLX::sdl3PP::Widget::setX(const float x) {
@@ -73,21 +130,46 @@ void JFLX::sdl3PP::Widget::setWidgetCommand(std::unique_ptr<WidgetCommand> widge
 // Configures how the widget is triggered:
 //   useButton                      -> fire command on mouse button press
 //   forceHoverActivationMouse      -> only fire mouse command when hovered
+//   forceClickPressMouse           -> click or hold activation for the key
 //   button                         -> which mouse button to listen to
 //   useKey                         -> fire command on keyboard key press
 //   forceHoverActivationKeyboard   -> only fire keyboard command when hovered
+//   forceClickPressKeyboard        -> click or hold activation for the button
 //   key                            -> which scancode to listen to
-void JFLX::sdl3PP::Widget::setActivation(const bool useButton, const bool forceHoverActivationMouse, const SDL_MouseButtonFlags button, const bool useKey, const bool forceHoverActivationKeyboard, const SDL_Scancode key) {
+void JFLX::sdl3PP::Widget::setActivation(const bool useButton, const bool forceHoverActivationMouse, const bool forceClickPressMouse, const SDL_MouseButtonFlags button, const bool useKey, const bool forceHoverActivationKeyboard, const bool forceClickPressKeyboard, const SDL_Scancode key) {
+    // Mouse
     wMouseActivated = useButton;
     wForceHoverActivationMouse = forceHoverActivationMouse;
+    wForceClickPressMouse = forceClickPressMouse;
     wButton = button;
+    // Keyboard
     wKeyboardActivated = useKey;
-    wKey = key;
     wForceHoverActivationKeyboard = forceHoverActivationKeyboard;
+    wForceClickPressKeyboard = forceClickPressKeyboard;
+    wKey = key;
 }
 
 
+/*
+ * State Check Functions
+*/
 
+bool JFLX::sdl3PP::Widget::isVisible() const {
+    return wIsShown;
+}
+
+bool JFLX::sdl3PP::Widget::isHovered() const {
+    return wIsHovered;
+}
+
+bool JFLX::sdl3PP::Widget::isPressed() const {
+    return wIsPressed;
+}
+
+
+/*
+ * Object Call Functions
+*/
 
 
 // Draws the widget using its internal renderer (wRenderer)
@@ -143,9 +225,11 @@ void JFLX::sdl3PP::Widget::update() {
         if (wMouseActivated) {
             if (!wForceHoverActivationMouse || wForceHoverActivationMouse && wIsHovered) {
                 bool pressed = SDL_GetMouseState(nullptr, nullptr) & wButton;
-                if (pressed && !wWasPressedMouse) {
+                wIsPressed = false;
+                if (pressed && (!wWasPressedMouse || !wForceClickPressMouse)) {
                     wWidgetCommand->runCommand(this);
                     wActive = wActiveDuration;
+                    wIsPressed = true;
                 }
                 wWasPressedMouse = pressed;
             }
@@ -154,9 +238,11 @@ void JFLX::sdl3PP::Widget::update() {
         if (wKeyboardActivated && wKey != SDL_SCANCODE_UNKNOWN) {
             if (!wForceHoverActivationKeyboard || wForceHoverActivationKeyboard && wIsHovered) {
                 bool pressed = SDL_GetKeyboardState(nullptr)[wKey];
-                if (pressed && !wWasPressedKey) {
+                wIsPressed = false;
+                if (pressed && (!wWasPressedKey || !wForceClickPressKeyboard)) {
                     wWidgetCommand->runCommand(this);
                     wActive = wActiveDuration;
+                    wIsPressed = true;
                 }
                 wWasPressedKey = pressed;
             }
